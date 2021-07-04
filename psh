@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2155,SC2015,SC2046
 grep(){
   LANG=C
   rcase() {
@@ -15,14 +16,14 @@ grep(){
 }
 ulist=$(
   IFS=""; while read -r p || [ -n "$p" ]; do
-    p=${p##*bin}; p=${p#*>}; p=${p%%<*}
+    p="${p##*bin}"; p="${p#*>}"; p="${p%%<*}"
     unset IFS; printf "%s " "$p"
   done << EOF
 $(IFS=""; curl -sL "https://github.com/ThatGeekyWeeb/shapplet/tree/head/bin" | grep "href=*head/bin/")
 EOF
 ) # list of currently existing utils at shapplets
 for i in $ulist; do
-  IFS=""; export c="$(curl -sL https://github.com/ThatGeekyWeeb/shapplet/raw/head/bin/$i)"
+  IFS=""; export c="$(curl -sL "https://github.com/ThatGeekyWeeb/shapplet/raw/head/bin/$i")"
   eval $(while read -r p || [ -n "$p" ]; do
     printf "%s\\n" "$p"
   done << EOF
