@@ -1,0 +1,24 @@
+-------------------------------
+# pSH: portable pureSH util replacements
+-------------------------------
+# pSH is a single script which can be sourced (`.`)
+# to replace basic utils such as
+  - grep
+  - seq
+  - cat
+  - ls
+  - touch
+# with pure(POSIX)SH ones 
+# allowing for faster, and more portable (shell) scripts
+-------------------------------
+# scripts are grabbed from (github) ThatGeekyWeeb/shapplet
+-------------------------------
+# Requires:
+  - curl
+  - /bin/sh
+-------------------------------
+# Usage:
+. ./psh
+# running this will replace all utils listed @ ThatGeekyWeeb/shapplet
+# with pureSH functions
+-------------------------------

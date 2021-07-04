@@ -1,0 +1,34 @@
+#!/bin/sh
+grep(){
+  LANG=C
+  rcase() {
+    while read -r p || [ -n "$p" ] ; do
+      case "$p" in
+        *${1}*)
+          [ "$2" != "-q" ] && { IFS=""; printf "%s\\n" "$p"; } || { exit 0; }
+        ;;
+      esac    
+    done <&0
+    exit 1
+  }
+  rcase "${1:?grep requires an argument}" "${2:+-q}" || exit 1
+}
+ulist=$(
+  IFS=""; while read -r p || [ -n "$p" ]; do
+    p=${p##*bin}; p=${p#*>}; p=${p%%<*}
+    unset IFS; printf "%s " "$p"
+  done << EOF
+$(IFS=""; curl -sL "https://github.com/ThatGeekyWeeb/shapplet/tree/head/bin" | grep "href=*head/bin/")
+EOF
+) # list of currently existing utils at shapplets
+for i in $ulist; do
+  IFS=""; export c="$(curl -sL https://github.com/ThatGeekyWeeb/shapplet/raw/head/bin/$i)"
+  eval $(while read -r p || [ -n "$p" ]; do
+    printf "%s\\n" "$p"
+  done << EOF
+${i}(){
+  eval ${c}
+}
+EOF
+)
+done
